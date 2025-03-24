@@ -31,6 +31,9 @@ public class UnitService {
     }
 
     public Unit createUnit(Unit unit) {
+        if (unit == null) {
+            throw new IllegalArgumentException("Unit cannot be null");
+        }
 
         return unitRepository.save(unit);
 
