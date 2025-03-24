@@ -31,11 +31,11 @@ public class TaskOrganizationService {
         return results;
     }
 
-
     public TaskOrganization createTaskOrganization(TaskOrganization taskOrganization) {
         if (taskOrganization == null) {
             throw new IllegalArgumentException("Task Organization cannot be null");
         }
+
         return taskOrganizationRepository.save(taskOrganization);
     }
 

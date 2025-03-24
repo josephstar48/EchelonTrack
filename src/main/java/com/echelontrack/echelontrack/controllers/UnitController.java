@@ -2,10 +2,12 @@ package com.echelontrack.echelontrack.controllers;
 
 import com.echelontrack.echelontrack.entities.Unit;
 import com.echelontrack.echelontrack.service.UnitService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/units")
@@ -18,20 +20,23 @@ public class UnitController {
     }
 
     @GetMapping
-    public List<Unit> getAllUnits() {
-        return unitService.getAllUnits();
+    public ResponseEntity<List<Unit>> getAllUnits() {
+        List<Unit> units = unitService.getAllUnits();
+        return ResponseEntity.ok(units);
     }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<Unit> getUnitById(@PathVariable Long id) {
-        return unitService.getUnitById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        Optional<Unit> unit = unitService.getUnitById(id);
+        return unit.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public Unit createUnit(@RequestBody Unit unit) {
-        return unitService.createUnit(unit);
+    public ResponseEntity<Unit> createUnit(@RequestBody Unit unit) {
+        Unit createdUnit = unitService.createUnit(unit);
+        return ResponseEntity.status(201).body(createdUnit);
     }
 
     @PutMapping("/{id}")
