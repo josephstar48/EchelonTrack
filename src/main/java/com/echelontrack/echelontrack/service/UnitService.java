@@ -40,6 +40,39 @@ public class UnitService {
     }
 
     @Transactional
+    public Unit updateUnit(Long id, Unit updatedUnit) {
+        Unit existingUnit = unitRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Unit not found with ID: " + id));
+
+        // Validate and update the fields
+        if (updatedUnit.getUnitName() != null) {
+            existingUnit.setUnitName(updatedUnit.getUnitName());
+        }
+
+        if (updatedUnit.getUnitUIC() != null) {
+            existingUnit.setUnitUIC(updatedUnit.getUnitUIC());
+        }
+
+        if (updatedUnit.getUnitEchelon() != null) {
+            existingUnit.setUnitEchelon(updatedUnit.getUnitEchelon());
+        }
+
+        if (updatedUnit.getUnitDesignation() != null) {
+            existingUnit.setUnitDesignation(updatedUnit.getUnitDesignation());
+        }
+
+        if (updatedUnit.getPersonnelCount() != null) {
+            existingUnit.setPersonnelCount(updatedUnit.getPersonnelCount());
+        }
+
+        if (updatedUnit.getParentUnit() != null) {
+            existingUnit.setParentUnit(updatedUnit.getParentUnit());
+        }
+
+        return unitRepository.save(existingUnit);
+    }
+
+    @Transactional
     public void deleteUnit(Long id) {
         if (!unitRepository.existsById(id)) {
             throw new ResourceNotFoundException("Unit not found with ID: " + id);
