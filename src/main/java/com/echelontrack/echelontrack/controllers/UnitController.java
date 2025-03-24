@@ -34,6 +34,12 @@ public class UnitController {
         return unitService.createUnit(unit);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Unit> updateUnit(@PathVariable Long id, @RequestBody Unit unit) {
+        Unit updatedUnit = unitService.updateUnit(id, unit);
+        return ResponseEntity.ok(updatedUnit);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUnit(@PathVariable Long id) {
         unitService.deleteUnit(id);

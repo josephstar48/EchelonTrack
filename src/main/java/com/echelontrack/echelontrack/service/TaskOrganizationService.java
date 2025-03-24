@@ -40,6 +40,29 @@ public class TaskOrganizationService {
     }
 
     @Transactional
+    public TaskOrganization updateTaskOrganization(Long id, TaskOrganization updatedTaskOrganization) {
+        // Fetch the existing TaskOrganization from the repository
+        TaskOrganization existingTaskOrganization = taskOrganizationRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Task Organization not found with ID: " + id));
+
+        // Update the fields of the existing TaskOrganization only if the updated values are not null
+        if (updatedTaskOrganization.getOpordId() != null) {
+            existingTaskOrganization.setOpordId(updatedTaskOrganization.getOpordId());
+        }
+
+        if (updatedTaskOrganization.getUnit() != null) {
+            existingTaskOrganization.setUnit(updatedTaskOrganization.getUnit());
+        }
+
+        if (updatedTaskOrganization.getMissionRole() != null) {
+            existingTaskOrganization.setMissionRole(updatedTaskOrganization.getMissionRole());
+        }
+
+        // Save the updated TaskOrganization
+        return taskOrganizationRepository.save(existingTaskOrganization);
+    }
+
+    @Transactional
     public void deleteTaskOrganization(Long id) {
         if (!taskOrganizationRepository.existsById(id)) {
             throw new ResourceNotFoundException("Task Organization not found with ID: " + id);
